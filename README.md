@@ -63,4 +63,7 @@ Only implementations of `HealthIndicator` are currently supported. `Composites` 
 
 ## Notes
 
-Note that  `HealthIndicator`  will return  `Status.UNKNOWN`  if the `/health` endpoint is called before the first  `HealthIndicator.health()`  check is completed. (likely to occur on application startup).
+  - `HealthIndicator`  will return  `Status.UNKNOWN`  if the `/health` endpoint is called before the first  `HealthIndicator.health()`  check is completed. (likely to occur on application startup).
+
+  - There is no built-in timeout system. Make sure that your `health()` methods do timeout or they may block every other health checks (if the pool has less threads than you have indicators).
+
