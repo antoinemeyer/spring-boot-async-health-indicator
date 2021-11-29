@@ -35,8 +35,9 @@ public class LastDurationITest extends BaseITest {
                 new AssertionMatcher<String>() {
                     @Override
                     public void assertion(String actual) throws AssertionError {
-                        final String[] split = actual.split("s");
-                        Assert.assertEquals("1", split[0]);
+                        Assert.assertEquals(6, actual.length());
+                        Assert.assertTrue(actual.endsWith("ms"));
+                        Assert.assertTrue(actual.startsWith("1"));
                     }
                 }
             ));

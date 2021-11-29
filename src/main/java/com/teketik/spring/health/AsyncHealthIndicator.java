@@ -41,32 +41,26 @@ class AsyncHealthIndicator implements HealthIndicator, Runnable {
                 logger.trace(name + " computed in " + executionTime + " is " + originalHealth);
             }
             this.lastHealth = Health
-                    .status(originalHealth.getStatus())
-                    .withDetails(originalHealth.getDetails())
-                    .withDetail(LAST_CHECK_KEY, LocalDateTime.now())
-                    .withDetail(LAST_DURATION_KEY, executionTime)
-                    .build();
+                .status(originalHealth.getStatus())
+                .withDetails(originalHealth.getDetails())
+                .withDetail(LAST_CHECK_KEY, LocalDateTime.now())
+                .withDetail(LAST_DURATION_KEY, executionTime)
+                .build();
         } catch (Exception e) {
             logger.error("Error while refreshing healthIndicator " + name, e);
             this.lastHealth = Health
-                    .status(Status.DOWN)
-                    .withException(e)
-                    .withDetail(LAST_CHECK_KEY, LocalDateTime.now())
-                    .withDetail(LAST_DURATION_KEY, makeFormattedExecutionTime(currentTimeMillis))
-                    .build();
+                .status(Status.DOWN)
+                .withException(e)
+                .withDetail(LAST_CHECK_KEY, LocalDateTime.now())
+                .withDetail(LAST_DURATION_KEY, makeFormattedExecutionTime(currentTimeMillis))
+                .build();
         }
     }
 
     private String makeFormattedExecutionTime(long currentTimeMillis) {
-        return makeFormattedDifference(System.currentTimeMillis(), currentTimeMillis);
+        return (System.currentTimeMillis() - currentTimeMillis) + "ms";
     }
-    
-    //visible for testing
-    static String makeFormattedDifference(long end, long start) {
-        long executionTimeAsLong = end - start;
-        return String.format("%ds%03d", executionTimeAsLong / 1000, (executionTimeAsLong % 1000));
-    }
-    
+
     @Override
     public Health health() {
         return Optional

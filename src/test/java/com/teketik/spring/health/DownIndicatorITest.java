@@ -15,7 +15,7 @@ public class DownIndicatorITest extends BaseITest {
 
     @SpyBean
     private UpIndicator1 upIndicator1;
-    
+
     @Test
     public void testDown() throws Exception {
         Mockito
@@ -31,8 +31,8 @@ public class DownIndicatorITest extends BaseITest {
                     new AssertionMatcher<String>() {
                         @Override
                         public void assertion(String actual) throws AssertionError {
-                            final String[] split = actual.split("s");
-                            Assert.assertEquals("0", split[0]);
+                            Assert.assertTrue(actual.length() < 4);
+                            Assert.assertTrue(actual.endsWith("ms"));
                         }
                     }
                 ));
@@ -44,5 +44,5 @@ public class DownIndicatorITest extends BaseITest {
                 .andExpect(MockMvcResultMatchers.jsonPath("components.upIndicator1.status").value("UP"));
         });
     }
-    
+
 }

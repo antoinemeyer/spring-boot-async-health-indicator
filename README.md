@@ -13,7 +13,7 @@ The last `Health` calculated will be returned when calling the `/health` endpoin
 The following details are added to the `Health`:
 
   - `lastChecked` (`LocalDateTime`): Defines when the health was calculated.
-  - `lastDuration` (Duration in second and ms as `XsXXX`): Defines how long it took to calculate that last `Health`.
+  - `lastDuration` (Duration in ms): Defines how long it took to calculate that last `Health`.
 
 ## Advantages over synchronous Indicators
 
@@ -54,7 +54,7 @@ This module is auto-configured.
 
   - All `@AsyncHealth` annotated `HealthIndicator`s have details logged under logger `com.teketik.spring.health.AsyncHealthIndicator` as `TRACE`:
 
-*Example*: `myIndicator computed in 0s247 is UP {detailKey=detailValue}`
+*Example*: `myIndicator computed in 247ms is UP {detailKey=detailValue}`
 
  
 ## Limitations
