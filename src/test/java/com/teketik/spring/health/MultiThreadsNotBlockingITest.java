@@ -3,7 +3,6 @@ package com.teketik.spring.health;
 import org.awaitility.Awaitility;
 import org.junit.Test;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -11,8 +10,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.concurrent.TimeUnit;
 
 @ActiveProfiles("with-expensive-indicator")
-@TestPropertySource(properties = "management.health.async.pool-size=2")
-public class MultiThreadsITest extends BaseITest {
+public class MultiThreadsNotBlockingITest extends BaseITest {
 
     @Test
     public void testExpensiveIndicatorNotBlockingOtherIndicators() throws Exception {

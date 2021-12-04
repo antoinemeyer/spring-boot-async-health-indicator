@@ -6,6 +6,8 @@ Async Health Indicator for [spring-boot-actuator](https://docs.spring.io/spring-
 
 ##### When annotating a `HealthIndicator` with `@AsyncHealth`:
 
+TODO add stuff regarding timeout
+
 The `health()` method is invoked on application startup and with the given delay (in second) between the termination of one execution and the commencement of the next.
 
 The last `Health` calculated will be returned when calling the `/health` endpoint.
@@ -40,13 +42,17 @@ This module is auto-configured.
 
 ## ScheduledThreadPool Configuration
 
+TODO dynamic pool size ?
+
  | Property | Description | Default |
  | -------- | ----------- | ------- |
- | `management.health.async.pool-size` | Number of threads calculating the `health()` methods. (In case you have multiple long-running `health()` methods, it is advised to increase this number so that those indicators may run in parallel and not block others). | 1 |
+ | `management.health.async.maximum-pool-size` | Number of maximum threads calculating the `health()` methods. (Note that this max will likely be reached on application startup when all indicators are starting up but will likely size down when different durations allow threads to be reused more efficiently). | 10 |
 
 
 ## Logging
 
+
+TODO update with trace debug and shit
 
   - On application startup, all cached health indicators are logged under logger `com.teketik.spring.health.AsyncHealthIndicatorAutoConfiguration` as `INFO`:
 
@@ -64,6 +70,3 @@ Only implementations of `HealthIndicator` are currently supported. `Composites` 
 ## Notes
 
   - `HealthIndicator`  will return  `Status.UNKNOWN`  if the `/health` endpoint is called before the first  `HealthIndicator.health()`  check is completed. (likely to occur on application startup).
-
-  - There is no built-in timeout system. Make sure that your `health()` methods do timeout or they may block every other health checks (if the pool has less threads than you have indicators).
-

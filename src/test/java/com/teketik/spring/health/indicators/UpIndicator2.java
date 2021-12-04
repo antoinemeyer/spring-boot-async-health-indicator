@@ -6,7 +6,7 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
 
-@AsyncHealth(2)
+@AsyncHealth(refreshRate = 2)
 @Component
 public class UpIndicator2 implements HealthIndicator {
 
