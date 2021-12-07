@@ -10,7 +10,7 @@ Async Health Indicator for [spring-boot-actuator](https://docs.spring.io/spring-
 The `health()` method is invoked on application startup and with the configured `refreshRate` (in second) between the termination of one execution and the commencement of the next.
 The `/health` endpoint will not invoke the `health()` method but return the last `Health` calculated asynchronously.
 
-The duration of the `health()` method is monitored. If it exceeds the configured `timeout`, any subsequent calls to `/health` will return this HealthIndicator as `DOWN` until the next `health()` method execution.
+The duration of the `health()` method is monitored. If it exceeds the configured `timeout`, any subsequent calls to `/health` will return this HealthIndicator as `DOWN` until the next `health()` method completion.
 
 The following details are added to the pre-existing `Health` details:
 
