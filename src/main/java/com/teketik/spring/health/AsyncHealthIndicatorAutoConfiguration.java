@@ -28,18 +28,6 @@ import java.util.List;
 //TODO find a more efficient way to tap into the contributor map?
 class AsyncHealthIndicatorAutoConfiguration implements InitializingBean, DisposableBean {
 
-    //TODO
-    //in case of interutpion expcetion, say in healthcheck it likely timed out!
-
-    //TODO add a note that many many rest calls cannot be interrupted.
-    //the timeout will say it is timed out but the rest call may still be ongoing and the next check will start after this call has finished.
-    // therefore PLEASE ENSURE THAT YOUR CALLS have timeouts!!
-
-
-    //add in readme a section on how it works
-    //add an example with a mermaid schema.
-
-
     private final Log logger = LogFactory.getLog(getClass());
 
     @Autowired

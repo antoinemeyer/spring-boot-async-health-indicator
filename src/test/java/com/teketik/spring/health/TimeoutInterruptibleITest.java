@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @ActiveProfiles("with-timing-out-indicator")
-public class TimeoutITest extends BaseITest {
+public class TimeoutInterruptibleITest extends BaseITest {
 
     @Test
     public void test() throws InterruptedException {
