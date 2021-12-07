@@ -63,9 +63,7 @@ public class SchedulingThreadPoolExecutor extends ThreadPoolExecutor {
     protected void beforeExecute(Thread thread, Runnable runnable) {
         TaskDecorator decorator = (TaskDecorator) runnable;
         final ScheduledFuture<?> interrupterScheduledFuture = coordinatorExecutorService.schedule(
-            () -> {
-                thread.interrupt();
-            },
+            () -> thread.interrupt(),
             decorator.runnable.getTimeoutInSeconds(),
             TimeUnit.SECONDS
         );
