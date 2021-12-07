@@ -48,8 +48,8 @@ When a `health()` method duration exceeds the configured `timeout`, the thread r
 Unfortunately, most I/O calls are not interruptible and the thread may continue to execute the method until it times out (according to the libraries and configuration used).
 If that happens, you will observe the `timeout` error message printed for each `/health` hit until that method times out like:
 ```
-ERROR AsyncHealthIndicator   : HealthIndicator myIndicator took too long to execute [duration=1217ms][timeout=1s]
-ERROR AsyncHealthIndicator   : HealthIndicator myIndicator took too long to execute [duration=2228ms][timeout=1s]
+ERROR AsyncHealthIndicator   : HealthIndicator[name=myIndicator] is taking too long to execute [duration=2121ms][timeout=2s]
+ERROR AsyncHealthIndicator   : HealthIndicator[name=myIndicator] is taking too long to execute [duration=3189ms][timeout=2s]
 ```
 
 It is therefore recommended to ensure that your  `health()` methods can time out naturally within an acceptable window (matching the configured `timeout`)
@@ -67,11 +67,11 @@ It is therefore recommended to ensure that your  `health()` methods can time out
 
   - On application startup, all cached health indicators are logged under logger `com.teketik.spring.health.AsyncHealthIndicatorAutoConfiguration` as `INFO`:
 
-*Example*: `Initializing AsyncHealthIndicator [name=myIndicator, refreshRate=3s, timeout=2s]`
+*Example*: `Initializing AsyncHealthIndicator[name=myIndicator][refreshRate=3s][timeout=2s]`
 
   - All `@AsyncHealth` annotated `HealthIndicator`s have details logged under logger `com.teketik.spring.health.AsyncHealthIndicator` as `DEBUG`:
 
-*Example*: `myIndicator computed in 247ms is UP {detailKey=detailValue}`
+*Example*: `HealthIndicator[name=myIndicator][duration=147ms][status=UP {detailKey=detailValue}]`
 
 ## Limitations
 

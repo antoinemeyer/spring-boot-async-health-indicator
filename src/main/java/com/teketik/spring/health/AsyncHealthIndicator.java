@@ -50,7 +50,7 @@ class AsyncHealthIndicator implements HealthIndicator, Schedulable {
                 .orElseGet(() -> {
                     final String formattedExecutionTime = executionTime + "ms";
                     if (logger.isDebugEnabled()) {
-                        logger.debug(name + " computed in " + formattedExecutionTime + " is " + originalHealth);
+                        logger.debug("HealthIndicator[name=" + name + "][duration=" + formattedExecutionTime + "][status=" + originalHealth + "]");
                     }
                     return Health
                         .status(originalHealth.getStatus())
@@ -60,13 +60,14 @@ class AsyncHealthIndicator implements HealthIndicator, Schedulable {
                         .build();
                 });
         } catch (Exception e) {
-            logger.error("Error while refreshing healthIndicator " + name, e);
+            final String formattedExecutionTime = (System.currentTimeMillis() - this.healthStartTimeMillis) + "ms";
+            logger.error("Error while refreshing HealthIndicator[name=" + name + "][duration=" + formattedExecutionTime + "]", e);
             this.lastHealth = Health
                 .status(Status.DOWN)
                 .withException(e)
                 .withDetail(REASON_KEY, "Exception")
                 .withDetail(LAST_CHECK_KEY, LocalDateTime.now())
-                .withDetail(LAST_DURATION_KEY, System.currentTimeMillis() - this.healthStartTimeMillis + "ms")
+                .withDetail(LAST_DURATION_KEY, formattedExecutionTime)
                 .build();
         }
         this.healthStartTimeMillis = -1;
@@ -89,7 +90,7 @@ class AsyncHealthIndicator implements HealthIndicator, Schedulable {
 
     private Optional<Health> checkForTimeout(final long currentDuration) {
         if (currentDuration > TimeUnit.SECONDS.toMillis(timeoutInSeconds)) {
-            logger.error("HealthIndicator " + name + " took too long to execute [duration="
+            logger.error("HealthIndicator[name=" + name + "] is taking too long to execute [duration="
                 + currentDuration + "ms][timeout=" + timeoutInSeconds + "s]");
             return Optional.of(
                 Health
@@ -115,7 +116,7 @@ class AsyncHealthIndicator implements HealthIndicator, Schedulable {
 
     @Override
     public String toString() {
-        return "AsyncHealthIndicator [name=" + name + ", refreshRate=" + refreshRateInSeconds + "s, timeout=" + timeoutInSeconds + "s]";
+        return "AsyncHealthIndicator[name=" + name + "][refreshRate=" + refreshRateInSeconds + "s][timeout=" + timeoutInSeconds + "s]";
     }
 
 }
