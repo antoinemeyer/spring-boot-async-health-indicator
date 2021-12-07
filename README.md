@@ -1,6 +1,7 @@
 
 
 
+
 # Spring Boot Async Health Indicator
 
 Async Health Indicator for [spring-boot-actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html) >=2.2.0 gives [Health Indicator](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/actuate/health/HealthIndicator.html) the ability to get refreshed asynchronously on a background ThreadPoolExecutor using the annotation `@AsyncHealth`.
@@ -14,7 +15,7 @@ The duration of the `health()` method is monitored. If it exceeds the configured
 
 The following details are added to the pre-existing `Health` details:
 
-  - `lastChecked` (`LocalDateTime`): Defines when the health was calculated.
+  - `lastChecked` (`LocalDateTime`): Defines when that last `Health` started execution.
   - `lastDuration` (Duration in ms): Defines how long it took to calculate that last `Health`.
   - `reason` (enum): Added only if the Health Indicator is marked`DOWN`: `Exception` or `Timeout`.
 

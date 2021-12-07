@@ -8,7 +8,9 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.health.Status;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -46,7 +48,7 @@ class AsyncHealthIndicator implements HealthIndicator, Schedulable {
         try {
             final Health originalHealth = this.originalHealthIndicator.health();
             final long executionTime = System.currentTimeMillis() - this.healthStartTimeMillis;
-            this.lastHealth = checkForTimeout(executionTime)
+            this.lastHealth = checkForTimeout(executionTime, localDateTimeOf(this.healthStartTimeMillis))
                 .orElseGet(() -> {
                     final String formattedExecutionTime = executionTime + "ms";
                     if (logger.isDebugEnabled()) {
@@ -55,7 +57,7 @@ class AsyncHealthIndicator implements HealthIndicator, Schedulable {
                     return Health
                         .status(originalHealth.getStatus())
                         .withDetails(originalHealth.getDetails())
-                        .withDetail(LAST_CHECK_KEY, LocalDateTime.now())
+                        .withDetail(LAST_CHECK_KEY, localDateTimeOf(this.healthStartTimeMillis))
                         .withDetail(LAST_DURATION_KEY, formattedExecutionTime)
                         .build();
                 });
@@ -66,7 +68,7 @@ class AsyncHealthIndicator implements HealthIndicator, Schedulable {
                 .status(Status.DOWN)
                 .withException(e)
                 .withDetail(REASON_KEY, "Exception")
-                .withDetail(LAST_CHECK_KEY, LocalDateTime.now())
+                .withDetail(LAST_CHECK_KEY, localDateTimeOf(this.healthStartTimeMillis))
                 .withDetail(LAST_DURATION_KEY, formattedExecutionTime)
                 .build();
         }
@@ -77,7 +79,10 @@ class AsyncHealthIndicator implements HealthIndicator, Schedulable {
     public Health health() {
         final long startTimeMillis = this.healthStartTimeMillis;
         if (startTimeMillis != -1) {
-            final Optional<Health> timeout = checkForTimeout(System.currentTimeMillis() - startTimeMillis);
+            final Optional<Health> timeout = checkForTimeout(
+                System.currentTimeMillis() - startTimeMillis,
+                localDateTimeOf(startTimeMillis)
+            );
             if (timeout.isPresent()) {
                 return timeout.get();
             }
@@ -88,7 +93,7 @@ class AsyncHealthIndicator implements HealthIndicator, Schedulable {
         return UNKNOWN_HEALTH;
     }
 
-    private Optional<Health> checkForTimeout(final long currentDuration) {
+    private Optional<Health> checkForTimeout(final long currentDuration, final LocalDateTime checkTime) {
         if (currentDuration > TimeUnit.SECONDS.toMillis(timeoutInSeconds)) {
             logger.error("HealthIndicator[name=" + name + "] is taking too long to execute [duration="
                 + currentDuration + "ms][timeout=" + timeoutInSeconds + "s]");
@@ -96,7 +101,7 @@ class AsyncHealthIndicator implements HealthIndicator, Schedulable {
                 Health
                     .status(Status.DOWN)
                     .withDetail(REASON_KEY, "Timeout")
-                    .withDetail(LAST_CHECK_KEY, LocalDateTime.now())
+                    .withDetail(LAST_CHECK_KEY, checkTime)
                     .withDetail(LAST_DURATION_KEY, currentDuration + "ms")
                     .build()
             );
@@ -117,6 +122,10 @@ class AsyncHealthIndicator implements HealthIndicator, Schedulable {
     @Override
     public String toString() {
         return "AsyncHealthIndicator[name=" + name + "][refreshRate=" + refreshRateInSeconds + "s][timeout=" + timeoutInSeconds + "s]";
+    }
+
+    private static LocalDateTime localDateTimeOf(long timeMillis) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(timeMillis), ZoneId.systemDefault());
     }
 
 }

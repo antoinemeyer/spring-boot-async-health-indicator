@@ -87,7 +87,7 @@ public class TimeoutUninterruptibleITest extends BaseITest {
                         public void assertion(String actual) throws AssertionError {
                             timingOutIndicatorLastChecked[1] = LocalDateTime.parse(actual);
                             final int difference = (int) Duration.between(timingOutIndicatorLastChecked[0], timingOutIndicatorLastChecked[1]).toMillis();
-                            Assert.assertThat(difference, Matchers.greaterThan(0));
+                            Assert.assertEquals(0, difference);
                         }
                     }
                 ));
