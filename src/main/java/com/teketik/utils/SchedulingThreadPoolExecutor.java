@@ -26,11 +26,11 @@ public class SchedulingThreadPoolExecutor extends ThreadPoolExecutor {
 
     class TaskDecorator<V> extends FutureTask<V> {
 
-        private final Schedulable runnable;
+        private final Schedulable schedulable;
 
-        public TaskDecorator(Schedulable runnable, V result) {
-            super(runnable, result);
-            this.runnable = runnable;
+        public TaskDecorator(Schedulable schedulable, V result) {
+            super(schedulable, result);
+            this.schedulable = schedulable;
         }
 
     }
@@ -64,7 +64,7 @@ public class SchedulingThreadPoolExecutor extends ThreadPoolExecutor {
         TaskDecorator decorator = (TaskDecorator) runnable;
         final ScheduledFuture<?> interrupterScheduledFuture = coordinatorExecutorService.schedule(
             () -> thread.interrupt(),
-            decorator.runnable.getTimeoutInSeconds(),
+            decorator.schedulable.getTimeoutInSeconds(),
             TimeUnit.SECONDS
         );
         runningTasks.put(runnable, interrupterScheduledFuture);
@@ -77,8 +77,8 @@ public class SchedulingThreadPoolExecutor extends ThreadPoolExecutor {
             .ofNullable(runningTasks.remove(runnable))
             .ifPresent(runningTask -> runningTask.cancel(false));
         coordinatorExecutorService.schedule(
-            () -> submit(decorator.runnable),
-            decorator.runnable.getRefreshRateInSeconds(),
+            () -> submit(decorator.schedulable),
+            decorator.schedulable.getRefreshRateInSeconds(),
             TimeUnit.SECONDS
         );
     }
