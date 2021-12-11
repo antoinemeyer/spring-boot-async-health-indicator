@@ -35,7 +35,7 @@ This module is auto-configured.
 <dependency>
   <groupId>com.teketik</groupId>
   <artifactId>async-health-indicator</artifactId>
-  <version>boot2-v1.0</version>
+  <version>boot2-v1.1</version>
 </dependency>
 ```
   - Annotate any `HealthIndicator` with `@AsyncHealth(refreshRate = $REFRESH_RATE, timeout = $TIMEOUT)` 
