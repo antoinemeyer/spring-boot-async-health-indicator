@@ -8,10 +8,10 @@ Async Health Indicator for [spring-boot-actuator](https://docs.spring.io/spring-
 
 ##### When annotating a `HealthIndicator` with `@AsyncHealth`:
 
-The `health()` method is invoked on application startup and with the configured `refreshRate` (in second) between the termination of one execution and the commencement of the next.
-The `/health` endpoint will not invoke the `health()` method but return the last `Health` calculated asynchronously.
+The `health()` method is invoked on application startup and with the configured `refreshRate`  between the termination of one execution and the commencement of the next.
+Calling the `/health` endpoint will not invoke the `health()` method but return the last `Health` calculated asynchronously. *(`Status.UNKNOWN`  is returned if the `/health` endpoint is called before the first  `HealthIndicator.health()`  check is completed (likely to occur on application startup))*
 
-The duration of the `health()` method is monitored. If it exceeds the configured `timeout`, any subsequent calls to `/health` will return this HealthIndicator as `DOWN` until the next `health()` method completion.
+The duration of the `health()` method is monitored. If it exceeds the configured `timeout`, any  call to `/health` will return this HealthIndicator as `DOWN` until the next `health()` method completion.
 
 The following details are added to the pre-existing `Health` details:
 
@@ -22,7 +22,7 @@ The following details are added to the pre-existing `Health` details:
 ## Advantages over synchronous Indicators
 
   - Expensive Health Indicators that do not have to be calculated every time `/health` is called can run on their own schedule.
-  - The call to `/health` is now super fast as it returns pre-calculated `Health`.
+  - The call to `/health` is instantaneous as it returns pre-calculated `Health`.
   - Multiple Health Indicators can run in parallel.
   - Timeouts can be controlled per Health Indicator.
 
@@ -41,6 +41,7 @@ This module is auto-configured.
   - Annotate any `HealthIndicator` with `@AsyncHealth(refreshRate = $REFRESH_RATE, timeout = $TIMEOUT)` 
 
 `$REFRESH_RATE` = Fixed delay in seconds between the termination of the `health()` execution and the commencement of the next (default 1).
+
 `$TIMEOUT`= The maximum time in seconds that the `health()` execution can take before being considered `DOWN` (default 10).
 
 ## Regarding Timeout
@@ -78,8 +79,5 @@ It is therefore recommended to ensure that your  `health()` methods can time out
 
 Only implementations of `HealthIndicator` are currently supported. `Composites` are not. (Let me know if you need that!).
 
-## Notes
-
-  - `HealthIndicator`  will return  `Status.UNKNOWN`  if the `/health` endpoint is called before the first  `HealthIndicator.health()`  check is completed. (likely to occur on application startup).
 
  
