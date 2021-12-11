@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 
 @TestPropertySource(properties = {
     "management.health.async.pool.max-size=7",
-    "management.health.async.pool.keep-alive=7",
+    "management.health.async.pool.keep-alive=8",
 })
 public class ConfigurationTest extends BaseITest {
 
@@ -25,7 +25,7 @@ public class ConfigurationTest extends BaseITest {
         final SchedulingThreadPoolExecutor schedulingThreadPoolExecutor = (SchedulingThreadPoolExecutor) ReflectionTestUtils
             .getField(asyncHealthIndicatorAutoConfiguration, "schedulingThreadPoolExecutor");
         Assert.assertEquals(7, schedulingThreadPoolExecutor.getMaximumPoolSize());
-        Assert.assertEquals(7, schedulingThreadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS));
+        Assert.assertEquals(8, schedulingThreadPoolExecutor.getKeepAliveTime(TimeUnit.SECONDS));
     }
 
 }
