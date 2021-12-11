@@ -34,7 +34,6 @@ import java.util.concurrent.ThreadPoolExecutor;
  *     }
  * }
  * </pre>
- * <p>
  * <hr>
  * <h3>Regarding Timeout</h3>
  * <p>
