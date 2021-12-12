@@ -15,5 +15,5 @@ public class DefaultIndicatorITest extends BaseITest {
             .andExpect(MockMvcResultMatchers.jsonPath("components.defaultIndicator.status").value("UP"))
             .andExpect(MockMvcResultMatchers.jsonPath("components.defaultIndicator.details").doesNotExist());
     }
-    
+
 }

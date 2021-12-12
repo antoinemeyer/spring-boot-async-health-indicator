@@ -7,15 +7,15 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Profile("with-expensive-indicator")
+@Profile("with-timing-out-indicator")
 @Component
-@AsyncHealth(refreshRate = 1)
-public class ExpensiveIndicator implements HealthIndicator {
+@AsyncHealth(refreshRate = 1, timeout = 1)
+public class TimingOutSleepingIndicator implements HealthIndicator {
 
     @Override
     public Health health() {
         try {
-            Thread.sleep(10000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
