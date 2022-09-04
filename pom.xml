@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.teketik</groupId>
     <artifactId>async-health-indicator</artifactId>
-    <version>boot2-v1.1</version>
+    <version>boot2-v1.2</version>
     <name>Spring Boot Async Health Indicator</name>
     <description>Asynchronous Health Indicator for Spring Boot</description>
     <url>https://github.com/antoinemeyer/spring-boot-async-health-indicator</url>

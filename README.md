@@ -1,7 +1,4 @@
 
-
-
-
 # Spring Boot Async Health Indicator
 
 Async Health Indicator for [spring-boot-actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html) >=2.2.0 gives [Health Indicator](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/actuate/health/HealthIndicator.html) the ability to get refreshed asynchronously on a background ThreadPoolExecutor using the annotation `@AsyncHealth`.
@@ -35,18 +32,20 @@ This module is auto-configured.
 <dependency>
   <groupId>com.teketik</groupId>
   <artifactId>async-health-indicator</artifactId>
-  <version>boot2-v1.1</version>
+  <version>boot2-v1.2</version>
 </dependency>
 ```
-  - Annotate any `HealthIndicator` with `@AsyncHealth(refreshRate = $REFRESH_RATE, timeout = $TIMEOUT)` 
+  - Annotate any `HealthIndicator` with `@AsyncHealth(refreshRate = $REFRESH_RATE, timeout = $TIMEOUT, interruptOnTimeout = $INTERRUPT_ON_TIMEOUT)` 
 
-`$REFRESH_RATE` = Fixed delay in seconds between the termination of the `health()` execution and the commencement of the next (default 1).
+`$REFRESH_RATE` = Fixed delay in seconds between the termination of the `health()` execution and the commencement of the next (default `1`).
 
-`$TIMEOUT`= The maximum time in seconds that the `health()` execution can take before being considered `DOWN` (default 10).
+`$TIMEOUT`= The maximum time in seconds that the `health()` execution can take before being considered `DOWN` (default `10`).
+
+`$INTERRUPT_ON_TIMEOUT` = Whether the thread should be interrupted when a timeout occurs. (if `false`, the next check will only be scheduled after the current execution terminates naturally). (default `true`)
 
 ## Regarding Timeout
 
-When a `health()` method duration exceeds the configured `timeout`, the thread running it is `interrupted`with the hope that the method will fail with an exception (causing it to be `DOWN`) and free up the thread. 
+When a `health()` method duration exceeds the configured `timeout`, the thread running it is `interrupted` if `interruptOnTimeout` is `true` with the hope that the method will fail with an exception (causing it to be `DOWN`) and free up the thread. 
 Unfortunately, most I/O calls are not interruptible and the thread may continue to execute the method until it times out (according to the libraries and configuration used).
 If that happens, you will observe the `timeout` error message printed for each `/health` hit until that method times out like:
 ```

@@ -28,15 +28,17 @@ class AsyncHealthIndicator implements HealthIndicator, Schedulable {
     private final String name;
     private final int refreshRateInSeconds;
     private final int timeoutInSeconds;
+    private final boolean interruptOnTimeout;
 
     private volatile Health lastHealth;
     private volatile long healthStartTimeMillis = -1;
 
-    public AsyncHealthIndicator(HealthIndicator originalHealthIndicator, String name, int refreshRateInSeconds, int timeoutInSeconds) {
+    public AsyncHealthIndicator(HealthIndicator originalHealthIndicator, String name, int refreshRateInSeconds, int timeoutInSeconds, boolean interruptOnTimeout) {
         this.originalHealthIndicator = originalHealthIndicator;
         this.name = name;
         this.refreshRateInSeconds = refreshRateInSeconds;
         this.timeoutInSeconds = timeoutInSeconds;
+        this.interruptOnTimeout = interruptOnTimeout;
     }
 
     @Override
@@ -115,8 +117,10 @@ class AsyncHealthIndicator implements HealthIndicator, Schedulable {
     }
 
     @Override
-    public int getTimeoutInSeconds() {
-        return timeoutInSeconds;
+    public Optional<Integer> getTimeoutInSeconds() {
+        return interruptOnTimeout
+            ? Optional.of(timeoutInSeconds)
+            : Optional.empty();
     }
 
     @Override

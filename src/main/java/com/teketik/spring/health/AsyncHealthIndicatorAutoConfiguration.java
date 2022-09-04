@@ -53,7 +53,8 @@ class AsyncHealthIndicatorAutoConfiguration implements InitializingBean, Disposa
                         indicator,
                         contributorName,
                         annotation.refreshRate(),
-                        annotation.timeout()
+                        annotation.timeout(),
+                        annotation.interruptOnTimeout()
                     );
                     healthContributorRegistry.registerContributor(contributorName, asyncHealthIndicator);
                     asyncHealthIndicators.add(asyncHealthIndicator);
