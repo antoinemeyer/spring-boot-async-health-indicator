@@ -4,12 +4,11 @@ import com.teketik.utils.SchedulingThreadPoolExecutor;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Resource;
 
 @TestPropertySource(properties = {
     "management.health.async.pool.max-size=7",
@@ -17,7 +16,7 @@ import javax.annotation.Resource;
 })
 public class ConfigurationTest extends BaseITest {
 
-    @Resource
+    @Autowired
     private AsyncHealthIndicatorAutoConfiguration asyncHealthIndicatorAutoConfiguration;
 
     @Test

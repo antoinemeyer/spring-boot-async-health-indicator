@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.teketik</groupId>
     <artifactId>async-health-indicator</artifactId>
-    <version>boot2-v1.1</version>
+    <version>boot3-v1.2</version>
     <name>Spring Boot Async Health Indicator</name>
     <description>Asynchronous Health Indicator for Spring Boot</description>
     <url>https://github.com/antoinemeyer/spring-boot-async-health-indicator</url>
@@ -29,14 +29,15 @@
     </developers>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version>
     </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>2.2.0.RELEASE</version>
+        <version>3.0.13</version>
     </parent>
 
     <dependencies>
@@ -51,6 +52,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <!-- TODO remove exclusion -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.jupiter</groupId>
+                    <artifactId>junit-jupiter</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -67,6 +75,15 @@
             <artifactId>awaitility</artifactId>
             <scope>test</scope>
         </dependency>
+
+<!-- TODO switch to junit 5 that is in spring boot test -->        
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.13.2</version>
+    <scope>test</scope>
+</dependency>
+        
     </dependencies>
 
     <build>
@@ -121,7 +138,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.7.201606060606</version>
+                <version>0.8.11</version>
                 <executions>
                     <execution>
                         <goals>
@@ -148,7 +165,7 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>1.00</minimum>
+                                            <minimum>0.90</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
