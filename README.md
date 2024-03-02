@@ -1,7 +1,7 @@
 
 # Spring Boot Async Health Indicator
 
-Async Health Indicator for [spring-boot-actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html) >=2.2.0 gives [Health Indicator](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/actuate/health/HealthIndicator.html) the ability to get refreshed asynchronously on a background ThreadPoolExecutor using the annotation `@AsyncHealth`.
+Async Health Indicator for [spring-boot-actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html) >=2.2 and >=3.0 gives [Health Indicator](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/actuate/health/HealthIndicator.html) the ability to get refreshed asynchronously on a background ThreadPoolExecutor using the annotation `@AsyncHealth`.
 
 ##### When annotating a `HealthIndicator` with `@AsyncHealth`:
 
@@ -28,6 +28,9 @@ The following details are added to the pre-existing `Health` details:
 This module is auto-configured.
 
   -  Include dependency from maven central:
+
+For spring boot 2:
+
 ```
 <dependency>
   <groupId>com.teketik</groupId>
@@ -35,6 +38,16 @@ This module is auto-configured.
   <version>boot2-v1.2</version>
 </dependency>
 ```
+For spring boot 3:
+
+```
+<dependency>
+  <groupId>com.teketik</groupId>
+  <artifactId>async-health-indicator</artifactId>
+  <version>boot3-v1.3</version>
+</dependency>
+```
+
   - Annotate any `HealthIndicator` with `@AsyncHealth(refreshRate = $REFRESH_RATE, timeout = $TIMEOUT, interruptOnTimeout = $INTERRUPT_ON_TIMEOUT)` 
 
 `$REFRESH_RATE` = Fixed delay in seconds between the termination of the `health()` execution and the commencement of the next (default `1`).
