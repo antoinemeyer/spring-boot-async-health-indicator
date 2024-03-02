@@ -2,9 +2,10 @@ package com.teketik.spring.health;
 
 import org.assertj.core.matcher.AssertionMatcher;
 import org.awaitility.Awaitility;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -31,9 +32,9 @@ public class TimeoutUninterruptibleITest extends BaseITest {
                         @Override
                         public void assertion(String actual) throws AssertionError {
                             timingOutIndicatorDurations[0] = Integer.parseInt(actual.substring(0, 4));
-                            Assert.assertEquals(6, actual.length());
-                            Assert.assertTrue(actual.endsWith("ms"));
-                            Assert.assertTrue(actual.startsWith("1"));
+                            Assertions.assertEquals(6, actual.length());
+                            Assertions.assertTrue(actual.endsWith("ms"));
+                            Assertions.assertTrue(actual.startsWith("1"));
                         }
                     }
                 ))
@@ -66,8 +67,8 @@ public class TimeoutUninterruptibleITest extends BaseITest {
                         @Override
                         public void assertion(String actual) throws AssertionError {
                             timingOutIndicatorDurations[1] = Integer.parseInt(actual.substring(0, 4));
-                            Assert.assertTrue(timingOutIndicatorDurations[1] > timingOutIndicatorDurations[0]);
-                            Assert.assertEquals(6, actual.length());
+                            Assertions.assertTrue(timingOutIndicatorDurations[1] > timingOutIndicatorDurations[0]);
+                            Assertions.assertEquals(6, actual.length());
                         }
                     }
                 ))
@@ -76,7 +77,7 @@ public class TimeoutUninterruptibleITest extends BaseITest {
                         @Override
                         public void assertion(String actual) throws AssertionError {
                             final int difference = (int) Duration.between(upIndicator1FirstLastChecked[0], LocalDateTime.parse(actual)).toMillis();
-                            Assert.assertThat(difference, Matchers.greaterThan(0));
+                            MatcherAssert.assertThat(difference, Matchers.greaterThan(0));
 
                         }
                     }
@@ -87,7 +88,7 @@ public class TimeoutUninterruptibleITest extends BaseITest {
                         public void assertion(String actual) throws AssertionError {
                             timingOutIndicatorLastChecked[1] = LocalDateTime.parse(actual);
                             final int difference = (int) Duration.between(timingOutIndicatorLastChecked[0], timingOutIndicatorLastChecked[1]).toMillis();
-                            Assert.assertEquals(0, difference);
+                            Assertions.assertEquals(0, difference);
                         }
                     }
                 ));
@@ -103,7 +104,7 @@ public class TimeoutUninterruptibleITest extends BaseITest {
                     new AssertionMatcher<String>() {
                         @Override
                         public void assertion(String actual) throws AssertionError {
-                            Assert.assertTrue(Integer.parseInt(actual.substring(0, 4)) < timingOutIndicatorDurations[1]);
+                            Assertions.assertTrue(Integer.parseInt(actual.substring(0, 4)) < timingOutIndicatorDurations[1]);
                         }
                     }
                 ))
@@ -112,7 +113,7 @@ public class TimeoutUninterruptibleITest extends BaseITest {
                         @Override
                         public void assertion(String actual) throws AssertionError {
                             final int difference = (int) Duration.between(timingOutIndicatorLastChecked[1], LocalDateTime.parse(actual)).toMillis();
-                            Assert.assertThat(difference, Matchers.greaterThan(0));
+                            MatcherAssert.assertThat(difference, Matchers.greaterThan(0));
                         }
                     }
                 ));
