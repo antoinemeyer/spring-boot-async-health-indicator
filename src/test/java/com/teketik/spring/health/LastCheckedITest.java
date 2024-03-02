@@ -4,9 +4,10 @@ package com.teketik.spring.health;
 import org.assertj.core.matcher.AssertionMatcher;
 import org.awaitility.Awaitility;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -19,9 +20,9 @@ public class LastCheckedITest extends BaseITest {
 
     @Test
     public void testInstanceOf() {
-        Assert.assertTrue(healthContributorRegistry.getContributor("defaultIndicator") instanceof HealthIndicator);
-        Assert.assertTrue(healthContributorRegistry.getContributor("upIndicator1") instanceof AsyncHealthIndicator);
-        Assert.assertTrue(healthContributorRegistry.getContributor("upIndicator2") instanceof AsyncHealthIndicator);
+        Assertions.assertTrue(healthContributorRegistry.getContributor("defaultIndicator") instanceof HealthIndicator);
+        Assertions.assertTrue(healthContributorRegistry.getContributor("upIndicator1") instanceof AsyncHealthIndicator);
+        Assertions.assertTrue(healthContributorRegistry.getContributor("upIndicator2") instanceof AsyncHealthIndicator);
     }
 
     @Test
@@ -32,7 +33,7 @@ public class LastCheckedITest extends BaseITest {
             .andExpect(MockMvcResultMatchers.jsonPath("components.upIndicator1.status").value("UNKNOWN"))
             .andExpect(MockMvcResultMatchers.jsonPath("components.upIndicator1.details").doesNotExist());
     }
-    
+
     @Test
     public void testUpIndicator1Statuses() throws Exception {
         // wait until health computed
@@ -52,7 +53,7 @@ public class LastCheckedITest extends BaseITest {
                     public void assertion(String actual) throws AssertionError {
                         firstLastChecked[0] = LocalDateTime.parse(actual);
                         final int difference = (int) Duration.between(firstLastChecked[0], now).toMillis();
-                        Assert.assertThat(difference, CoreMatchers.allOf(
+                        MatcherAssert.assertThat(difference, CoreMatchers.allOf(
                             Matchers.greaterThanOrEqualTo(0),
                             Matchers.lessThan(1000)
                         ));
@@ -69,7 +70,7 @@ public class LastCheckedITest extends BaseITest {
                     @Override
                     public void assertion(String actual) throws AssertionError {
                         final LocalDateTime secondHit = LocalDateTime.parse(actual);
-                        Assert.assertEquals(firstLastChecked[0], secondHit);
+                        Assertions.assertEquals(firstLastChecked[0], secondHit);
                     }
                 }
             ));
@@ -85,7 +86,7 @@ public class LastCheckedITest extends BaseITest {
                     public void assertion(String actual) throws AssertionError {
                         final LocalDateTime thirdHit = LocalDateTime.parse(actual);
                         final int difference = (int) Duration.between(firstLastChecked[0], thirdHit).toMillis();
-                        Assert.assertThat(difference, Matchers.greaterThan(0));
+                        MatcherAssert.assertThat(difference, Matchers.greaterThan(0));
                     }
                 }
             ));

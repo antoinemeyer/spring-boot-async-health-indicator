@@ -4,8 +4,8 @@ import com.teketik.spring.health.indicators.UpIndicator1;
 
 import org.assertj.core.matcher.AssertionMatcher;
 import org.awaitility.Awaitility;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -31,8 +31,8 @@ public class DownIndicatorITest extends BaseITest {
                     new AssertionMatcher<String>() {
                         @Override
                         public void assertion(String actual) throws AssertionError {
-                            Assert.assertTrue(actual.length() < 4);
-                            Assert.assertTrue(actual.endsWith("ms"));
+                            Assertions.assertTrue(actual.length() < 4);
+                            Assertions.assertTrue(actual.endsWith("ms"));
                         }
                     }
                 ));

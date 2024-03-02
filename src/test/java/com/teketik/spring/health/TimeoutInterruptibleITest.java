@@ -2,9 +2,10 @@ package com.teketik.spring.health;
 
 import org.assertj.core.matcher.AssertionMatcher;
 import org.awaitility.Awaitility;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -30,9 +31,9 @@ public class TimeoutInterruptibleITest extends BaseITest {
                     new AssertionMatcher<String>() {
                         @Override
                         public void assertion(String actual) throws AssertionError {
-                            Assert.assertEquals(6, actual.length());
-                            Assert.assertTrue(actual.endsWith("ms"));
-                            Assert.assertTrue(actual.startsWith("1"));
+                            Assertions.assertEquals(6, actual.length());
+                            Assertions.assertTrue(actual.endsWith("ms"));
+                            Assertions.assertTrue(actual.startsWith("1"));
                         }
                     }
                 ))
@@ -63,9 +64,9 @@ public class TimeoutInterruptibleITest extends BaseITest {
                     new AssertionMatcher<String>() {
                         @Override
                         public void assertion(String actual) throws AssertionError {
-                            Assert.assertEquals(6, actual.length());
-                            Assert.assertTrue(actual.endsWith("ms"));
-                            Assert.assertTrue(actual.startsWith("1"));
+                            Assertions.assertEquals(6, actual.length());
+                            Assertions.assertTrue(actual.endsWith("ms"));
+                            Assertions.assertTrue(actual.startsWith("1"));
                         }
                     }
                 ))
@@ -74,7 +75,7 @@ public class TimeoutInterruptibleITest extends BaseITest {
                         @Override
                         public void assertion(String actual) throws AssertionError {
                             final int difference = (int) Duration.between(upIndicator1FirstLastChecked[0], LocalDateTime.parse(actual)).toMillis();
-                            Assert.assertThat(difference, Matchers.greaterThan(0));
+                            MatcherAssert.assertThat(difference, Matchers.greaterThan(0));
 
                         }
                     }
@@ -84,7 +85,7 @@ public class TimeoutInterruptibleITest extends BaseITest {
                         @Override
                         public void assertion(String actual) throws AssertionError {
                             final int difference = (int) Duration.between(timingOutSleepingIndicatorFirstLastChecked[0], LocalDateTime.parse(actual)).toMillis();
-                            Assert.assertThat(difference, Matchers.greaterThan(0));
+                            MatcherAssert.assertThat(difference, Matchers.greaterThan(0));
                         }
                     }
                 ));

@@ -35,7 +35,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * }
  * </pre>
  * <hr>
- * <h3>Regarding Timeout</h3>
+ * <strong>Regarding Timeout</strong>
  * <p>
  * When a {@link HealthIndicator#health() health method} duration exceeds the configured {@link #timeout()}, the thread running it is <strong>interrupted</strong> if {@link #interruptOnTimeout()} is {@code true}
  * with the hope that the method will fail with an exception (causing it to be {@link Status#DOWN}) and free up the thread.<br>
