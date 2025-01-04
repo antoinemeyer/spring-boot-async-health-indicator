@@ -44,7 +44,7 @@ For spring boot 3:
 <dependency>
   <groupId>com.teketik</groupId>
   <artifactId>async-health-indicator</artifactId>
-  <version>boot3-v1.3</version>
+  <version>boot3-v1.4</version>
 </dependency>
 ```
 
