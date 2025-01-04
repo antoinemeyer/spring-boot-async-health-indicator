@@ -26,7 +26,7 @@ import java.util.List;
 @ConditionalOnBean(HealthContributorRegistry.class)
 @AutoConfigureAfter(HealthEndpointAutoConfiguration.class)
 //TODO find a more efficient way to tap into the contributor map?
-class AsyncHealthIndicatorAutoConfiguration implements InitializingBean, DisposableBean {
+public class AsyncHealthIndicatorAutoConfiguration implements InitializingBean, DisposableBean {
 
     private final Log logger = LogFactory.getLog(getClass());
 
